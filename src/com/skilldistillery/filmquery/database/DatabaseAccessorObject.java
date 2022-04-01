@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.skilldistillery.filmquery.entities.Actor;
@@ -31,7 +32,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			ResultSet rs = s.executeQuery();
 			if(rs.next()) {
 				film = new Film();
-				film.setId(rs.getInt(1));
+				film.setId(rs.getInt("id"));
 				film.setTitle(rs.getString("title"));
 				film.setDescription(rs.getString("description"));
 				film.setRelease_year(rs.getInt("release_year"));
@@ -41,7 +42,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setReplacement_cost(rs.getDouble("replacement_cost"));
 				film.setRating(rs.getString("rating"));
 				film.setSpecial_features(rs.getString("special_features"));
-		
+				film.setActors(findActorsByFilmId(filmId));
 			}
 			rs.close();
 			s.close();
@@ -57,14 +58,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Actor actor = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT id,first_name,last_name"
-			       
-			     +"FROM actor WHERE id = ?";
+			String sql = "SELECT id,first_name,last_name FROM actor WHERE id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, actorId);
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
-			actor.setId(rs.getInt(1));
+			if(rs.next()) {
+				actor = new Actor();
+			actor.setId(rs.getInt("id"));
 			actor.setFirst_name(rs.getString("first_name"));
 			actor.setLast_name(rs.getString("last_name"));
 			
@@ -87,8 +87,39 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
-		// TODO Auto-generated method stub
-		return null;
+	List<Actor> actors = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			String sql = "SELECT id, first_name, last_name " 
+					+ " from actor a JOIN film_actor fa ON a.id = fa.actor_id " 
+					+ " WHERE fa.film_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, filmId);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+			Actor	actor = new Actor();
+			actor.setId(rs.getInt("id"));
+			actor.setFirst_name(rs.getString("first_name"));
+			actor.setLast_name(rs.getString("last_name"));
+			actors.add(actor);
+		} 
+			rs.close();
+			ps.close();
+			conn.close();
+		}
+		
+		catch (SQLException sqle) {
+			
+			sqle.printStackTrace();
+		}
+		
+		
+		
+		//	select id, first_name, last_name, from actor join film_actor on actor.actor_id where film_actor.film_-id = ?;
+		
+		return actors;
+		
 	}
 
 	static {
