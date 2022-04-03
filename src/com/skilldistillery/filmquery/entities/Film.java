@@ -15,7 +15,7 @@ public class Film {
 	private double replacement_cost;
 	private String rating;
 	private String special_features;
-
+	private String language;
 	private List<Actor> actors;
 	
 	
@@ -24,7 +24,7 @@ public class Film {
 	}
 
 	public Film(int id, String title, String description, Integer release_year, int language_id, int rental_duration,
-			double rental_rate, int length, double replacement_cost, String rating, String special_features) {
+			double rental_rate, int length, double replacement_cost, String rating, String special_features, String language) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -37,10 +37,19 @@ public class Film {
 		this.replacement_cost = replacement_cost;
 		this.rating = rating;
 		this.special_features = special_features;
+		this.language = language;
 	}
 
 	public int getId() {
 		return id;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public void setId(int id) {
@@ -154,17 +163,14 @@ public class Film {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Film [id=").append(id).append(", title=").append(title).append(", description=")
-				.append(description).append(", release_year=").append(release_year).append(", language_id=")
-				.append(language_id).append(", rental_duration=").append(rental_duration).append(", rental_rate=")
-				.append(rental_rate).append(", length=").append(length).append(", replacement_cost=")
-				.append(replacement_cost).append(", rating=").append(rating).append(", special_features=")
-				.append(special_features).append("]");
-		return builder.toString();
+		return "\n \n Film Title: " + title + " \n Description: " + description + " \n Release Year: " + release_year + " \n Rating: "
+				+ rating + "\n Language: " + language + "\n Actors in the Film: \n" + actors;
+	}
+
+
 	}
 
 	
-	}
+	
 
 
