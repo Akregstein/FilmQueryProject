@@ -39,10 +39,11 @@ public class FilmQueryApp {
 	private void startUserInterface(Scanner input) {
 		boolean menu = true;
 
-		System.out.println("      Welcome to Kazahkstans greatest moviefilm directory APP");
+		System.out.println("------------------------------------------------------------------");
+		System.out.println("     Welcome to Kazahkstans greatest moviefilm directory APP");
 		System.out.println();
-		System.out.println("      Please Make a selection from the following Menu");
-		System.out.println();
+		System.out.println("     Please Make a selection from the following Menu");
+		System.out.println("------------------------------------------------------------------");
 		System.out.println("            Very niiiice");
 		while (menu) {
 			System.out.println();
@@ -52,6 +53,8 @@ public class FilmQueryApp {
 			System.out.println("  1:  Look up a film by it's id           ");
 			System.out.println("  2:  Look up a film by a search Keyword           ");
 			System.out.println("  3:  Exit the application           ");
+			System.out.println();
+			System.out.println("           *WAWAWEEWA*");
 			int selection = input.nextInt();
 			if (selection == 3) {
 				System.out.println("Goodbye! see you at the disco dance \n I Like");
